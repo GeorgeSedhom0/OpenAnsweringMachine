@@ -36,7 +36,7 @@ dark, simple web UI in your browser. No cloud, no account.
 ## Install & build
 
 ```powershell
-git clone https://github.com/<you>/OpenAnsweringMachine.git
+git clone https://github.com/GeorgeSedhom0/OpenAnsweringMachine.git
 cd OpenAnsweringMachine
 powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 ```
