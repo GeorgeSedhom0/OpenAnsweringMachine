@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC-Phone</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">PC&#8209;Phone</div>
+    <div class="status">
+      <span class="dot" id="dot-engine"></span><span class="lbl" id="lbl-engine">engine</span>
+      <span class="dot" id="dot-phone"></span><span class="lbl" id="lbl-phone">phone</span>
+      <button id="btn-connect" class="btn ghost small">Connect phone</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- CALL CARD -->
+    <section class="card callcard" id="callcard" data-state="idle">
+      <div class="call-state" id="call-state">No active call</div>
+      <div class="call-who">
+        <div class="call-name" id="call-name"></div>
+        <div class="call-number" id="call-number"></div>
+      </div>
+      <div class="call-timer" id="call-timer"></div>
+
+      <!-- incoming actions -->
+      <div class="call-actions" id="actions-incoming">
+        <div class="countdown" id="countdown"></div>
+        <button class="btn answer"  onclick="cmd('answer')">Answer</button>
+        <button class="btn reject"  onclick="cmd('reject')">Reject</button>
+      </div>
+      <!-- active actions -->
+      <div class="call-actions" id="actions-active">
+        <button class="btn answer" id="btn-join" onclick="joinCall()" style="display:none">Join call</button>
+        <button class="btn ghost"  id="btn-keypad" onclick="toggleKeypad()">Keypad</button>
+        <button class="btn hangup" onclick="cmd('hangup')">Hang up</button>
+      </div>
+      <div class="machine-note" id="machine-note"></div>
+    </section>
+
+    <!-- DIALER (idle) -->
+    <section class="card dialer" id="dialer">
+      <input id="dial-input" class="dial-input" placeholder="Enter number" inputmode="tel">
+      <div class="keypad" id="keypad"></div>
+      <button class="btn call" id="btn-call" onclick="placeCall()">Call</button>
+    </section>
+
+    <!-- TABS -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="recordings">Recordings</button>
+      <button class="tab" data-tab="history">History</button>
+      <button class="tab" data-tab="contacts">Contacts</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+
+    <section class="card tabpane" id="pane-recordings"></section>
+    <section class="card tabpane hidden" id="pane-history"></section>
+    <section class="card tabpane hidden" id="pane-contacts"></section>
+    <section class="card tabpane hidden" id="pane-settings">
+      <div class="t1" style="margin-bottom:6px">Phone device</div>
+      <p class="hint" id="device-status">No phone selected yet.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
+        <button class="btn" id="btn-scan" onclick="scanDevices()">Scan for phones</button>
+      </div>
+      <div id="device-list" class="presets" style="margin-bottom:14px"></div>
+      <hr style="border-color:var(--line); margin:6px 0 16px">
+
+      <label class="row">
+        <span>Auto-answer (answering machine)</span>
+        <input type="checkbox" id="set-autoanswer">
+      </label>
+      <label class="row">
+        <span>Answer after (seconds)</span>
+        <input type="number" id="set-delay" min="0" max="60" class="num">
+      </label>
+      <button class="btn" onclick="saveSettings()">Save</button>
+      <p class="hint" id="settings-hint"></p>
+
+      <hr style="border-color:var(--line); margin:18px 0">
+      <div class="t1" style="margin-bottom:6px">Answering-machine greeting</div>
+      <p class="hint" id="greeting-status">Checking…</p>
+
+      <div class="t2" style="margin:6px 0">Pick a ready-made greeting (spoken by the PC):</div>
+      <div id="greeting-presets" class="presets"></div>
+
+      <div class="t2" style="margin:10px 0 6px">…or type your own:</div>
+      <textarea id="greeting-text" class="ta" placeholder="e.g. Hi, you've reached me — leave a message after the beep."></textarea>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px">
+        <button class="btn" onclick="speakGreeting()">Use spoken greeting</button>
+        <button class="btn ghost" id="btn-rec-greeting" onclick="toggleGreetingRec()">● Record with mic</button>
+        <button class="btn ghost" id="btn-play-greeting" onclick="playGreeting()">Preview</button>
+        <button class="btn ghost" id="btn-del-greeting" onclick="deleteGreeting()">Delete</button>
+      </div>
+      <p class="hint">Callers hear your greeting, then a beep, then their message records. No greeting = just a beep.</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

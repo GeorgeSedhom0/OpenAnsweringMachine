@@ -1,0 +1,7 @@
+{
+  "port": 8770,
+  "autoanswer": true,
+  "answerdelay": 5,
+  "recordings_dir": "recordings",
+  "device": null
+}
